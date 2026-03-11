@@ -1657,6 +1657,21 @@ int main() {
                 localStorage.setItem('htc_timer_start', round2StartTime.toString());
                 ideActive = true;
                 
+                // MAKE THE IDE VISIBLE AGAIN!
+                const ide = document.getElementById('ide-container');
+                ide.style.display = 'flex';
+                void ide.offsetWidth; // Force CSS reflow
+                ide.style.opacity = '1';
+                
+                // Reset ReadOnly in case they were locked out with a penalty earlier
+                if (editor) {
+                    editor.setReadOnly(false);
+                    editor.resize();
+                    const btn = document.getElementById('submit-btn');
+                    btn.disabled = false;
+                    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> SUBMIT`;
+                }
+                
                 startTimerLoop();
             }, 300);
         }
