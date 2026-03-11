@@ -773,7 +773,7 @@
                 </div>
                 <div class="mission-context">
                     <span class="mission-badge">Objective</span>
-                    <span>Fix the logic errors to calculate the exact sum of all prime numbers from 1 to 50. (Target Output: 328)</span>
+                    <span>Fix syntax, typos, and logic errors to find the exact average of all multiples of 3. (Target: 21)</span>
                 </div>
             </div>
 
@@ -828,6 +828,50 @@ Compiler daemon running in background...</span>
         </div>
     </div>
 
+    <!-- Capacity Warning Overlay (Round 1 Full) -->
+    <div id="capacity-warning" class="full-screen" style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
+        <div class="success-card">
+            <div class="success-icon" style="color: var(--status-error); border-color: var(--status-error); background: rgba(255, 71, 87, 0.1);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <div class="success-title">Maximum Capacity Reached</div>
+            <div class="success-desc" style="text-align: left; font-size: 0.95rem;">
+                Thank you for participating! The top 5 slots for Round 2 have already been filled.<br><br>
+                <b>The Round 1 Solution Bugs Included:</b><br>
+                1. Missing semicolon on variable declaration.<br>
+                2. Misspelled 'while' as 'whle'<br>
+                3. Misspelled 'printf' / 'System' / 'return'<br>
+                4. Logic error: Used assignment '=' instead of equality '=='<br>
+                5. Logic error: Out of bounds array iteration (<= instead of <)<br>
+                6. Java specific: file naming restriction bypassed by renaming class 'main' to lowercase or removing public.
+            </div>
+            <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL">PROCEED TO FEEDBACK</button>
+        </div>
+    </div>
+
+    <!-- Round 2 Lobby Overlay -->
+    <div id="round2-lobby" class="full-screen" style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
+        <div class="success-card">
+            <div class="success-icon" style="color: var(--accent-secondary); border-color: var(--accent-secondary); background: rgba(0, 210, 255, 0.1);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="success-title">Round 2 Qualifier</div>
+            <div class="success-desc" style="text-align: left;">
+                Congratulations on completing Round 1! You are in the top 5.<br><br>
+                <b>Round 2 Rules:</b><br>
+                - The code is much harder, missing logic architecture.<br>
+                - A timer will start the moment you click "Begin".<br>
+                - Closing the tab will NOT pause the timer.<br>
+                - The 2 fastest times win!
+            </div>
+            <button class="primary-btn" onclick="startRound2()">BEGIN ROUND 2</button>
+        </div>
+    </div>
+
     <!-- Load Ace Editor Offline Files -->
     <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
@@ -849,83 +893,202 @@ Compiler daemon running in background...</span>
         // 2. Off-by-one: The loop to 50 stops at 49 (e.g., python range(1, 50), C/Java i < 50)
         // 3. Logic error: checking if divisible by `i` starting from 1 (everything is div by 1)
         
-        const codes = {
-            'python': `def is_prime(n):
-    # Prime numbers check
-    if n <= 1:
-        return True # Logic error: 1 is not a prime number
-        
-    # Check for factors
-    for i in range(1, n): # Logic error: should start from 2
-        if n % i == 0:
-            return False
-            
-    return True
+        const codesRound1 = {
+            'python': `from typing import List
 
-def sum_primes():
-    total = 0
-    # Sum all primes from 1 to 50
-    for num in range(1, 50): # Off-by-one: stops at 49, missing 50 if needed (though 50 isn't prime, the logic is wrong)
-        if is_prime(num):
-            total += num
-            
-    # Target output is 328
-    print(total)
-
-sum_primes()`,
-            'c_cpp': `#include <stdio.h>
-#include <stdbool.h>
-
-bool is_prime(int n) {
-    if (n <= 1) return true; // Error: 1 is not prime
+def get_average_multiples_of_three(data_points: List[int]) -> float
+    """
+    Processes a list of integers to find the mathematical average 
+    of all elements divisible by 3.
+    """
+    total_sum = 0
+    match_count = 0
     
-    for (int i = 1; i < n; i++) { // Error: should start from 2
-        if (n % i == 0) return false;
+    idx = 1 
+    
+    whle idx <= len(data_points):
+        if data_points[idx] % 3 = 0:
+            total_sum += data_points[idx]
+            match_count += 1
+        idx += 1
+        
+    retun total_sum / match_count
+
+if __name__ == "__main__":
+    dataset = [12, 14, 15, 21, 22, 27, 30]
+    
+    result = get_average_multiples_of_three(dataset)
+    print(f"Calculated Average: {result}")`,
+            'c_cpp': `#include <stdio.h>
+#include <stdlib.h>
+
+/**
+ * Calculates the average of all multiples of 3 within a dataset.
+ * Returns -1.0 on failure or empty valid set.
+ */
+float getAverageMultiplesOfThree(const int* array, size_t length) {
+    long total_sum = 0
+    int match_count = 0;
+    
+    size_t idx = 1;
+
+    whle (idx <= length) {
+        if (array[idx] % 3 = 0) {
+            total_sum += array[idx];
+            match_count++;
+        }
+        idx++;
     }
-    return true;
+
+    if (match_count == 0) rturn -1.0;
+    return (float)total_sum / match_count;
 }
 
-int main() {
-    int total = 0;
+int main(int argc, char* argv[]) {
+    const int dataset[] = {12, 14, 15, 21, 22, 27, 30};
+    size_t data_len = sizeof(dataset) / sizeof(dataset[0]);
+
+    float result = getAverageMultiplesOfThree(dataset, data_len);
     
-    // Sum primes from 1 to 50
-    for (int num = 1; num < 50; num++) { // Off-by-one: bounds
-        if (is_prime(num)) {
-            total += num;
-        }
-    }
-    
-    // Target output is 328
-    printf("%d\\n", total);
-    return 0;
+    pritf("Calculated Average: %.0f\\n", result)
+
+    return EXIT_SUCCESS;
 }`,
-            'java': `public class Main {
-    public static boolean is_prime(int n) {
-        if (n <= 1) return true; // Error: 1 is not prime
+            'java': `import java.util.Arrays;
+import java.util.List;
+
+public class main {
+    /**
+     * Calculates the average of all multiples of 3 within a primitive array.
+     */
+    public static double getAverageMultiplesOfThree(int[] dataPoints) {
+        long totalSum = 0;
+        int matchCount = 0;
         
-        for (int i = 1; i < n; i++) { // Error: should start from 2
-            if (n % i == 0) return false;
+        int idx = 1;
+
+        whle (idx <= dataPoints.length) {
+            if (dataPoints[idx] % 3 = 0) {
+                totalSum += dataPoints[idx];
+                matchCount++;
+            }
+            idx++;
         }
-        return true;
+
+        if (matchCount == 0) rturn -1.0;
+        return (double) totalSum / matchCount;
     }
 
     public static void main(String[] args) {
-        int total = 0;
+        int[] dataset = {12, 14, 15, 21, 22, 27, 30};
         
-        // Sum primes from 1 to 50
-        for (int num = 1; num < 50; num++) { // Off-by-one bounds
-            if (is_prime(num)) {
-                total += num;
-            }
-        }
+        double result = getAverageMultiplesOfThree(dataset);
         
-        // Target output is 328
-        System.out.println(total);
+        Sytem.out.printf("Calculated Average: %.0f\\n", result)
     }
 }`
         };
 
+        const codesRound2 = {
+            'python': `def is_anagram(str1: str, str2: str) -> bool:
+    
+    
+    if len(str1) != len(str2):
+        return False
+        
+    char_counts = {}
+    for char in str1:
+        char_counts[char] = char_counts.get(char, 0) + 1
+        
+    for char in str2:
+        if char not in char_counts:
+            return False
+            
+        char_counts[char] -= 1
+        
+        
+    return True
+
+if __name__ == "__main__":
+    if is_anagram("Listen", "Silent") and not is_anagram("Hello", "World"):
+        print("Validation Passed: Anagrams detected")`,
+            'c_cpp': `#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+bool is_anagram(const char* str1, const char* str2) {
+    int counts[256] = {0};
+    
+    
+    
+    for (int i = 0; str1[i] != '\\0'; i++) {
+        if (str1[i] != ' ') {
+            counts[tolower(str1[i])]++;
+        }
+    }
+    
+    for (int i = 0; str2[i] != '\\0'; i++) {
+        if (str2[i] != ' ') {
+            counts[tolower(str2[i])]--;
+        }
+    }
+    
+    
+    
+    return true;
+}
+
+int main() {
+    if (is_anagram("Debit Card", "Bad Credit") && !is_anagram("Hello", "World")) {
+        printf("Validation Passed: Anagrams detected\\n");
+    }
+    return 0;
+}`,
+            'java': `public class Main {
+    public static boolean isAnagram(String s1, String s2) {
+        String clean1 = s1.replaceAll("\\\\s", "").toLowerCase();
+        
+        
+        if (clean1.length() != clean2.length()) { 
+            return false;
+        }
+        
+        int[] counts = new int[26];
+        for (int i = 0; i < clean1.length(); i++) {
+            counts[clean1.charAt(i) - 'a']++;
+            counts[clean2.charAt(i) - 'a']--;
+        }
+        
+        
+        
+        return true;
+    }
+
+    public static void main(String[] args) {
+        if (isAnagram("Dormitory", "Dirty room") && !isAnagram("Hello", "World")) {
+            System.out.println("Validation Passed: Anagrams detected");
+        }
+    }
+}`
+        };
+        
+        let currentRound = 1;
+        let codes = codesRound1;
+
         const exts = { 'python': 'py', 'c_cpp': 'c', 'java': 'java' };
+        
+        // Godbolt Compiler Explorer Language IDs
+        const godboltCompilers = {
+            'python': 'python311',
+            'c_cpp': 'cg132',
+            'java': 'java2100'
+        };
+        const gbLangIds = {
+            'python': 'python',
+            'c_cpp': 'c',
+            'java': 'java'
+        };
 
         // State Machine
         let penaltySeconds = 0;
@@ -973,6 +1136,24 @@ int main() {
         let editor;
         window.onload = () => {
             setTimeout(() => {
+                // LocalStorage Session Hydration
+                if (localStorage.getItem('htc_session_active') === 'true') {
+                    userName = localStorage.getItem('htc_username') || "UNKNOWN";
+                    currentRound = parseInt(localStorage.getItem('htc_round') || "1");
+                    
+                    if (currentRound === 2) {
+                        codes = codesRound2;
+                    }
+                    
+                    document.getElementById('display-agent-name').innerText = userName.toUpperCase();
+                    document.getElementById('access-gate').style.display = 'none';
+                    const ide = document.getElementById('ide-container');
+                    ide.style.display = 'flex';
+                    void ide.offsetWidth; // Reflow
+                    ide.style.opacity = '1';
+                    ideActive = true;
+                }
+                
                 editor = ace.edit("editor");
                 editor.setTheme("ace/theme/tomorrow_night_blue");
                 editor.session.setMode("ace/mode/python");
@@ -987,8 +1168,47 @@ int main() {
                     highlightActiveLine: true,
                 });
                 document.getElementById('editor').style.backgroundColor = "var(--bg-surface-elevated)";
+                
+                // If they bypassed login via session, check limits instantly
+                if (ideActive) {
+                    if (editor) editor.resize();
+                    checkRoundLimits();
+                    if (currentRound === 2) restoreRound2Timer();
+                }
             }, 50);
         };
+        
+        async function checkRoundLimits() {
+            if (!sbClient) return;
+            try {
+                // Determine if we need to lock them out of round 1 or prompt for round 2
+                const { data, count, error } = await sbClient
+                    .from('submissions')
+                    .select('name', { count: 'exact' });
+
+                if (!error) {
+                    const hasSubmittedR1 = data.some(row => row.name.toLowerCase() === userName.toLowerCase());
+
+                    if (currentRound === 1) {
+                        if (hasSubmittedR1) {
+                            // User passed Round 1. Show Lobby.
+                            ideActive = false;
+                            const lobby = document.getElementById('round2-lobby');
+                            lobby.style.display = 'flex';
+                            setTimeout(() => lobby.style.opacity = '1', 50);
+                        } else if (count >= 5) {
+                            // Round 1 is full, and user didn't make the top 5.
+                            ideActive = false;
+                            const warning = document.getElementById('capacity-warning');
+                            warning.style.display = 'flex';
+                            setTimeout(() => warning.style.opacity = '1', 50);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log("Supabase limit check failed", e);
+            }
+        }
         
         // --- PROCTORING LOGIC ---
         document.addEventListener("fullscreenchange", () => {
@@ -1039,9 +1259,34 @@ int main() {
         }
 
         // --- ACCESS GATE LOGIC ---
+        function validateDynamicToken(token) {
+            if (!token) return false;
+            token = token.toUpperCase();
+            
+            // Expected Format: HTC-XXXXXX-YY 
+            // - XXXXXX: 6 Random alphanumeric characters
+            // - YY: 2-character checksum (1 letter, 1 digit)
+            const regex = /^HTC-([A-Z0-9]{6})-([A-Z])([0-9])$/;
+            const match = token.match(regex);
+            
+            if (!match) return false;
+            
+            const payload = match[1];
+            let sum = 0;
+            for (let i = 0; i < payload.length; i++) {
+                sum += payload.charCodeAt(i);
+            }
+            
+            // Verification logic corresponding to the generator
+            const expectedLetter = String.fromCharCode(65 + (sum % 26)); // A-Z
+            const expectedDigit = (sum % 10).toString(); // 0-9
+            
+            return (expectedLetter === match[2] && expectedDigit === match[3]);
+        }
+
         function checkPassword() {
             const nameInput = document.getElementById('sys-name').value.trim();
-            const pwd = document.getElementById('sys-password').value.trim().toLowerCase();
+            const pwd = document.getElementById('sys-password').value.trim();
             const error = document.getElementById('pwd-error');
             const errorText = document.getElementById('error-text');
             const decryptMsg = document.getElementById('decrypting-msg');
@@ -1056,13 +1301,7 @@ int main() {
             
             errorText.innerText = "Invalid credentials. Access Denied.";
 
-            const validPasswords = [
-                'echo', 'fire', 'wind', 'keyboard', 'secret', 'coin', 'map', 'clock', 
-                'mirror', 'shadow', 'towel', 'silence', 'promise', 'footsteps', 'footstep', 
-                'time', 'river', 'name', 'sponge', 'breath', 'candle'
-            ];
-
-            if (validPasswords.includes(pwd)) {
+            if (validateDynamicToken(pwd)) {
                 // Request Fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen().catch(e => console.log(e));
@@ -1070,6 +1309,11 @@ int main() {
 
                 userName = nameInput;
                 document.getElementById('display-agent-name').innerText = userName.toUpperCase();
+                
+                // Save session so a refresh doesn't kick them out
+                localStorage.setItem('htc_session_active', 'true');
+                localStorage.setItem('htc_username', userName);
+                localStorage.setItem('htc_round', '1');
                 
                 error.style.opacity = '0';
                 loginBox.style.display = 'none';
@@ -1085,6 +1329,9 @@ int main() {
                         ide.style.opacity = '1';
                         if (editor) editor.resize();
                         ideActive = true; // Activate proctoring
+                        
+                        // Check if Round 1 is already full before letting them type
+                        checkRoundLimits();
                     }, 600);
                 }, 1500);
             } else {
@@ -1144,8 +1391,8 @@ int main() {
             }, 1000);
         }
 
-        // Hidden Checker - Validation Logic
-        function runCode() {
+        // Real Compiler Integration via Godbolt Compiler Explorer API
+        async function runCode() {
             if (isLockedOut) return;
 
             const userCode = editor.getValue();
@@ -1155,73 +1402,102 @@ int main() {
 
             btn.disabled = true;
             terminal.innerHTML += `<br><br><span class="t-cmd">$ build --target=${lang} main.${exts[lang]}</span>`;
-            terminal.innerHTML += `<br><span class="t-sys">Compiling source code...</span>`;
+            terminal.innerHTML += `<br><span class="t-sys">Transmitting code to execution server...</span>`;
             terminal.scrollTop = terminal.scrollHeight;
 
-            setTimeout(() => {
-                // Evaluator Simulation for "Prime Sum to 50" (Target value: 328)
-                // We parse the exact logic strings required to pass
-                let simulatedOutput = "UNKNOWN_ERROR";
-                let syntaxError = false;
+            try {
+                const postData = {
+                    source: userCode,
+                    options: {
+                        userArguments: '',
+                        compilerOptions: { executorRequest: true },
+                        executeParameters: { args: '', stdin: '' },
+                        tools: [],
+                        libraries: []
+                    },
+                    lang: gbLangIds[lang],
+                    allowStoreCodeDebug: true
+                };
+                
+                // For Java, the compiler limits require the class to match the filename. Godbolt compiles it as "example.java" by default.
+                // We map it to main.java so the student has to figure out they must rename "public class main"
+                if (lang === 'java') {
+                    postData.options.compilerOptions = { executorRequest: true, codeFilePath: "main.java" };
+                }
+                
+                terminal.innerHTML += `<br><span class="t-sys">Compiling source code...</span>`;
 
-                try {
-                    const cleanCode = userCode.replace(/\s+/g, '');
+                const response = await fetch(`https://godbolt.org/api/compiler/${godboltCompilers[lang]}/compile`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(postData)
+                });
 
-                    if (lang === 'python') {
-                        // Needs to fix: return False for n<=1, range(2, n) for factor check, range(1, 51) for main sum
-                        if (cleanCode.includes("ifn<=1:returnFalse") && 
-                           (cleanCode.includes("foriinrange(2,n):") || cleanCode.includes("foriinrange(2,int(n**0.5)+1):")) &&
-                           (cleanCode.includes("fornuminrange(1,51):") || cleanCode.includes("fornuminrange(2,51):"))) {
-                            simulatedOutput = "328";
-                        } else {
-                            // If they don't fix it completely, simulate a wild guess based on what pieces they have
-                            simulatedOutput = "420"; // Just bad output
-                        }
-                    } else if (lang === 'c_cpp') {
-                        if (cleanCode.includes("if(n<=1)returnfalse;") && 
-                           (cleanCode.includes("for(inti=2;") || cleanCode.includes("for(i=2;")) &&
-                           cleanCode.includes("num<=50;") || cleanCode.includes("num<51;")) {
-                            simulatedOutput = "328";
-                        } else {
-                            simulatedOutput = "420";
-                        }
-                    } else if (lang === 'java') {
-                        if (cleanCode.includes("if(n<=1)returnfalse;") && 
-                           cleanCode.includes("for(inti=2;") &&
-                           (cleanCode.includes("num<=50;") || cleanCode.includes("num<51;"))) {
-                            simulatedOutput = "328";
-                        } else {
-                            simulatedOutput = "420";
-                        }
-                    }
-                } catch (e) {
-                    syntaxError = true;
+                if (!response.ok) {
+                    throw new Error("Compiler Server Offline or Rate Limited");
                 }
 
-                if (syntaxError) {
-                    terminal.innerHTML += `<br><span class="t-err">Error: Compilation failed. Syntax errors detected.</span>`;
+                const result = await response.json();
+                
+                terminal.innerHTML += `<br><span class="t-sys">Executing binary...</span>`;
+
+                // Helper to extract text from Godbolt output arrays and strip all ANSI control chars
+                const extractText = (arr) => arr ? arr.map(l => l.text).join('\\n').replace(/\\x1b\\[[0-9;]*[a-zA-Z]/g, '') : "";
+
+                const buildCode = result.buildResult ? result.buildResult.code : 0;
+                const buildErr = result.buildResult ? extractText(result.buildResult.stderr) : "";
+                const runErr = extractText(result.stderr);
+                const output = extractText(result.stdout).trim();
+
+                // Handle Compilation/Syntax Errors
+                if (buildCode !== 0) {
+                    terminal.innerHTML += `<br><span class="t-err">Error: Compilation failed.</span><br>`;
+                    terminal.innerHTML += `<span class="t-err">${buildErr.replace(/\\n/g, '<br>')}</span>`;
                     terminal.scrollTop = terminal.scrollHeight;
                     applyPenalty();
                     return;
                 }
+                
+                // Handle Runtime Errors
+                if (result.code !== 0 && result.code !== -1) {
+                     terminal.innerHTML += `<br><span class="t-err">Error: Exited with non-zero status (${result.code}).</span><br>`;
+                     terminal.innerHTML += `<span class="t-err">${runErr.replace(/\\n/g, '<br>')}</span>`;
+                     terminal.scrollTop = terminal.scrollHeight;
+                     applyPenalty();
+                     return;
+                }
 
-                terminal.innerHTML += `<br><span class="t-sys">Executing binary...</span>`;
+                // Code executed successfully
+                terminal.innerHTML += `<br><span class="t-out">${output.replace(/\\n/g, '<br>')}</span>`;
 
+                // Validate if it produced the correct output
+                const expectedOutput = currentRound === 1 ? "Calculated Average: 21" : "Validation Passed: Anagrams detected";
+                if (output.includes(expectedOutput)) {
+                    terminal.innerHTML += `<br><span class="t-suc">✓ Validation Passed. Bugs isolated and neutralized.</span><br>`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                    setTimeout(triggerSuccess, 1500);
+                } else {
+                    terminal.innerHTML += `<br><span class="t-err">✗ Validation Failed. Output does not match expected business logic.</span>`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                    applyPenalty();
+                }
+
+            } catch (error) {
+                terminal.innerHTML += `<br><span class="t-err">System Error: ${error.message}</span>`;
+                if (error.stack) {
+                    terminal.innerHTML += `<br><span class="t-err" style="font-size: 0.8em; opacity: 0.7;">${error.stack}</span>`;
+                }
+                terminal.innerHTML += `<br><span class="t-err">Could not establish secure compiler connection.</span>`;
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                // Keep button locked down a tiny bit then unlock so we don't softlock the presentation on network error
                 setTimeout(() => {
-                    terminal.innerHTML += `<br><span class="t-out">${simulatedOutput}</span>`;
-
-                    if (simulatedOutput === "328") {
-                        terminal.innerHTML += `<br><span class="t-suc">✓ Validation Passed. Output matches expected target.</span><br>`;
-                        terminal.scrollTop = terminal.scrollHeight;
-                        setTimeout(triggerSuccess, 1500);
-                    } else {
-                        terminal.innerHTML += `<br><span class="t-err">✗ Validation Failed. Incorrect logic structure.</span>`;
-                        terminal.scrollTop = terminal.scrollHeight;
-                        applyPenalty();
-                    }
-                }, 600);
-
-            }, 800);
+                    btn.disabled = false;
+                }, 3000);
+            }
         }
 
         // --- DATABASE & SUCCESS LOGIC ---
@@ -1246,7 +1522,6 @@ int main() {
 
                 if (sbClient) {
                     try {
-                        // 1. Check current count
                         const { count, error: countError } = await sbClient
                             .from('submissions')
                             .select('*', { count: 'exact', head: true });
@@ -1258,6 +1533,42 @@ int main() {
                     } catch (e) {
                         console.log("Supabase fetch failed", e);
                     }
+                }
+                
+                // --- ROUND 2 SUCCESS LOGIC ---
+                if (currentRound === 2) {
+                    clearInterval(round2Interval);
+                    const elapsedSeconds = Math.floor((Date.now() - round2StartTime) / 1000);
+                    
+                    if (isDatabaseConnected) {
+                         await sbClient.from('round2_submissions').insert([
+                             { name: userName, time_taken_seconds: elapsedSeconds, passkey: "HTC-FINAL" }
+                         ]);
+                    }
+                    
+                    const m = Math.floor(elapsedSeconds / 60);
+                    const s = elapsedSeconds % 60;
+                    
+                    successCard.innerHTML = `
+                        <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="success-title">Challenge Completed!</div>
+                        <div class="success-desc">
+                            Incredible work! You formulated the Round 2 solution algorithm in <b>${m}m ${s}s</b>.<br><br>
+                            Your time has been recorded. The top 2 fastest qualifiers will be crowned the champions.
+                        </div>
+                        <div class="timestamp">Session finished: ${timestampStr}</div>
+                        <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL" style="margin-top: 20px;">PROCEED TO FEEDBACK</button>
+                    `;
+                    
+                    const success = document.getElementById('success-screen');
+                    success.style.display = 'flex';
+                    void success.offsetWidth;
+                    success.style.opacity = '1';
+                    return;
                 }
 
                 // --- RANKING LOGIC ---
@@ -1321,6 +1632,54 @@ int main() {
                 success.style.opacity = '1';
 
             }, 600);
+        }
+        
+        let round2Interval;
+        let round2StartTime;
+
+        function startRound2() {
+            const lobby = document.getElementById('round2-lobby');
+            lobby.style.opacity = '0';
+            setTimeout(() => {
+                lobby.style.display = 'none';
+                
+                // Initialize Round 2 State
+                currentRound = 2;
+                localStorage.setItem('htc_round', '2');
+                codes = codesRound2;
+                changeLanguage();
+                
+                // Update UI text
+                document.querySelector('.mission-badge').innerText = 'ROUND 2';
+                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Architect missing logic for a cross-platform Anagram checker.';
+                
+                // Start Timer
+                round2StartTime = Date.now();
+                localStorage.setItem('htc_timer_start', round2StartTime.toString());
+                ideActive = true;
+                
+                startTimerLoop();
+            }, 300);
+        }
+        
+        function restoreRound2Timer() {
+            const savedTime = localStorage.getItem('htc_timer_start');
+            if (savedTime) {
+                round2StartTime = parseInt(savedTime);
+                document.querySelector('.mission-badge').innerText = 'ROUND 2';
+                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Architect missing logic for a cross-platform Anagram checker.';
+                startTimerLoop();
+            }
+        }
+        
+        function startTimerLoop() {
+             const terminalTitle = document.querySelector('.term-title');
+             round2Interval = setInterval(() => {
+                 const elapsed = Math.floor((Date.now() - round2StartTime) / 1000);
+                 const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                 const s = (elapsed % 60).toString().padStart(2, '0');
+                 terminalTitle.innerHTML = `Execution Console <span style="color:var(--status-warning);margin-left:15px;">TIMER: ${m}:${s}</span>`;
+             }, 1000);
         }
     </script>
 </body>
