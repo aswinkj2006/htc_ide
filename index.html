@@ -1172,11 +1172,20 @@ int main() {
                 // If they bypassed login via session, check limits instantly
                 if (ideActive) {
                     if (editor) editor.resize();
-                    checkRoundLimits();
+                    if (currentRound === 1) startGlobalSync();
                     if (currentRound === 2) restoreRound2Timer();
                 }
             }, 50);
         };
+        
+        let globalPollInterval = null;
+
+        function startGlobalSync() {
+            if (!globalPollInterval && currentRound === 1) {
+                checkRoundLimits();
+                globalPollInterval = setInterval(checkRoundLimits, 5000); // Sync every 5 seconds
+            }
+        }
         
         async function checkRoundLimits() {
             if (!sbClient) return;
@@ -1190,18 +1199,49 @@ int main() {
                     const hasSubmittedR1 = data.some(row => row.name.toLowerCase() === userName.toLowerCase());
 
                     if (currentRound === 1) {
-                        if (hasSubmittedR1) {
-                            // User passed Round 1. Show Lobby.
+                        if (count >= 5) {
+                            clearInterval(globalPollInterval);
                             ideActive = false;
-                            const lobby = document.getElementById('round2-lobby');
-                            lobby.style.display = 'flex';
-                            setTimeout(() => lobby.style.opacity = '1', 50);
-                        } else if (count >= 5) {
-                            // Round 1 is full, and user didn't make the top 5.
+                            document.getElementById('ide-container').style.display = 'none';
+                            document.getElementById('success-screen').style.display = 'none';
+                            
+                            if (hasSubmittedR1) {
+                                // User passed Round 1. Show Lobby.
+                                const lobby = document.getElementById('round2-lobby');
+                                lobby.style.display = 'flex';
+                                setTimeout(() => lobby.style.opacity = '1', 50);
+                            } else {
+                                // Round 1 is full, and user didn't make the top 5.
+                                const warning = document.getElementById('capacity-warning');
+                                warning.style.display = 'flex';
+                                setTimeout(() => warning.style.opacity = '1', 50);
+                            }
+                        } else if (hasSubmittedR1 && count < 5) {
+                            // Waiting room state
                             ideActive = false;
-                            const warning = document.getElementById('capacity-warning');
-                            warning.style.display = 'flex';
-                            setTimeout(() => warning.style.opacity = '1', 50);
+                            document.getElementById('ide-container').style.display = 'none';
+                            const success = document.getElementById('success-screen');
+                            const successCard = document.getElementById('success-card-content');
+                            
+                            if (success.style.display !== 'flex') {
+                                success.style.display = 'flex';
+                                void success.offsetWidth;
+                                success.style.opacity = '1';
+                            }
+                            
+                            successCard.innerHTML = `
+                                <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="success-title">Verification Successful</div>
+                                <div class="success-desc">
+                                    Algorithm logic flaws corrected. You have qualified for <b>ROUND 2</b>.<br><br>
+                                    <span style="color: var(--status-warning)">Syncing global network... (${count}/5 slots filled)</span>
+                                </div>
+                                <div class="loader" style="width: 30px; height: 30px; margin: 0 auto; display: block; border-bottom-color: var(--status-warning);"></div>
+                            `;
                         }
                     }
                 }
@@ -1331,7 +1371,7 @@ int main() {
                         ideActive = true; // Activate proctoring
                         
                         // Check if Round 1 is already full before letting them type
-                        checkRoundLimits();
+                        startGlobalSync();
                     }, 600);
                 }, 1500);
             } else {
@@ -1478,6 +1518,7 @@ int main() {
                 if (output.includes(expectedOutput)) {
                     terminal.innerHTML += `<br><span class="t-suc">✓ Validation Passed. Bugs isolated and neutralized.</span><br>`;
                     terminal.scrollTop = terminal.scrollHeight;
+                    ideActive = false; // Turn off proctor warnings immediately
                     setTimeout(triggerSuccess, 1500);
                 } else {
                     terminal.innerHTML += `<br><span class="t-err">✗ Validation Failed. Output does not match expected business logic.</span>`;
@@ -1502,13 +1543,11 @@ int main() {
 
         // --- DATABASE & SUCCESS LOGIC ---
         async function triggerSuccess() {
-            ideActive = false; // Turn off proctor warnings
             const ide = document.getElementById('ide-container');
             ide.style.transition = 'opacity 0.6s ease';
             ide.style.opacity = '0';
 
             setTimeout(async () => {
-                ide.style.display = 'none';
                 const successCard = document.getElementById('success-card-content');
                 
                 // Formatted Timestamp
@@ -1517,8 +1556,8 @@ int main() {
                 const timestampStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
                 
                 // Supabase Logic
-                let rankCount = 0;
                 let isDatabaseConnected = false;
+                let rankCount = 0;
 
                 if (sbClient) {
                     try {
@@ -1564,6 +1603,7 @@ int main() {
                         <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL" style="margin-top: 20px;">PROCEED TO FEEDBACK</button>
                     `;
                     
+                    ide.style.display = 'none';
                     const success = document.getElementById('success-screen');
                     success.style.display = 'flex';
                     void success.offsetWidth;
@@ -1571,65 +1611,24 @@ int main() {
                     return;
                 }
 
-                // --- RANKING LOGIC ---
-                if (!sbClient || rankCount < 5 || !SUPABASE_URL.includes("supabase.co")) {
-                    // QUALIFIED FOR ROUND 2 (or running locally/no DB setup)
+                // --- ROUND 1 SUCCESS LOGIC ---
+                if (isDatabaseConnected && rankCount < 5) {
+                    // Check if already submitted to prevent duplicates if they click run multiple times
+                    const { data } = await sbClient.from('submissions').select('name').eq('name', userName);
+                    if (!data || data.length === 0) {
+                        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        let randomKey = "";
+                        for (let i = 0; i < 6; i++) randomKey += chars.charAt(Math.floor(Math.random() * chars.length));
+                        const passkey = "HTC-2026-" + randomKey;
 
-                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                    let randomKey = "";
-                    for (let i = 0; i < 6; i++) randomKey += chars.charAt(Math.floor(Math.random() * chars.length));
-                    const passkey = "HTC-2026-" + randomKey;
-
-                    if (isDatabaseConnected) {
-                        // 2. Insert into DB
                         await sbClient.from('submissions').insert([
                             { name: userName, passkey: passkey, timestamp: new Date().toISOString() }
                         ]);
                     }
-                    
-                    successCard.innerHTML = `
-                        <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                        </div>
-                        <div class="success-title">Verification Successful</div>
-                        <div class="success-desc">
-                            Algorithm logic flaws corrected. You have qualified for <b>ROUND 2</b>. Please save the passkey below.
-                        </div>
-                        <div class="passkey-container">
-                            <div class="passkey-label">Decrypted Passkey</div>
-                            <div class="passkey-display">${passkey}</div>
-                        </div>
-                        <div class="timestamp">Validated locally at: ${timestampStr}</div>
-                    `;
-                } else {
-                    // ROUND 2 IS FULL - REDIRECT
-                    successCard.innerHTML = `
-                        <div class="success-icon" style="color: var(--status-warning); border-color: var(--status-warning); background: rgba(255, 165, 2, 0.1);">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
-                            </svg>
-                        </div>
-                        <div class="success-title">Capacity Reached</div>
-                        <div class="success-desc">
-                            Thank you for participating! The puzzle is correct, but the top 5 slots for Round 2 have already been filled.<br><br>
-                            Redirecting you to the feedback form in 5 seconds...
-                        </div>
-                        <div class="timestamp">Completed at: ${timestampStr}</div>
-                    `;
-                    
-                    // Trigger redirect
-                    setTimeout(() => {
-                        window.location.href = FEEDBACK_FORM_URL;
-                    }, 5000);
                 }
 
-                // Show screen
-                const success = document.getElementById('success-screen');
-                success.style.display = 'flex';
-                void success.offsetWidth; // Reflow
-                success.style.opacity = '1';
+                // The sync loop or call will handle the UI state transition identically for all clients.
+                checkRoundLimits();
 
             }, 600);
         }
