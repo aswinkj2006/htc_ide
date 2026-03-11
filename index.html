@@ -990,84 +990,88 @@ public class main {
         };
 
         const codesRound2 = {
-            'python': `def is_anagram(str1: str, str2: str) -> bool:
-    
-    
-    if len(str1) != len(str2):
-        return False
+            'python': `def get_max_profit(prices: list[int]) -> int:
+    if len(prices) < 2:
+        return 0
         
-    char_counts = {}
-    for char in str1:
-        char_counts[char] = char_counts.get(char, 0) + 1
+    min_price == prices[0]  
+    max_profit = 0
+    
+    for i in range(1, len(prices) + 1)
         
-    for char in str2:
-        if char not in char_counts:
-            return False
+        
+        if proft > max_profit:
+            max_profit = proft
             
-        char_counts[char] -= 1
-        
-        
-    return True
+        if prices[i] < min_price:
+            min_price = prices[i]
+            
+    rturn max_profit
 
 if __name__ == "__main__":
-    if is_anagram("Listen", "Silent") and not is_anagram("Hello", "World"):
-        print("Validation Passed: Anagrams detected")`,
+    test_data = [7, 1, 5, 3, 6, 4]
+    if get_max_profit(test_data) == 5:
+        print("Validation Passed: Max Profit Detected")`,
             'c_cpp': `#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdbool.h>
+#include <stdlib.h>
 
-bool is_anagram(const char* str1, const char* str2) {
-    int counts[256] = {0};
+int get_max_profit(int prices[], int size) {
+    if (size < 2) return 0;
     
+    int min_price = prices[0];
+    int max_profit = 0;
     
-    
-    for (int i = 0; str1[i] != '\\0'; i++) {
-        if (str1[i] != ' ') {
-            counts[tolower(str1[i])]++;
+    for (int i = 1 i <= size; i++) { 
+        
+        
+        if (proft > max_profit) {  
+            max_profit = profit;
+        }
+        
+        if (prices[i] < min_price) {
+            min_price == prices[i];  
         }
     }
     
-    for (int i = 0; str2[i] != '\\0'; i++) {
-        if (str2[i] != ' ') {
-            counts[tolower(str2[i])]--;
-        }
-    }
-    
-    
-    
-    return true;
+    retrn max_profit; 
 }
 
 int main() {
-    if (is_anagram("Debit Card", "Bad Credit") && !is_anagram("Hello", "World")) {
-        printf("Validation Passed: Anagrams detected\\n");
+    int test_data[] = {7, 1, 5, 3, 6, 4};
+    int size = sizeof(test_data)
+    
+    if (get_max_profit(test_data, size) == 5) {
+        printf("Validation Passed: Max Profit Detected\\n");
     }
     return 0;
 }`,
-            'java': `public class Main {
-    public static boolean isAnagram(String s1, String s2) {
-        String clean1 = s1.replaceAll("\\\\s", "").toLowerCase();
+            'java': `public class main {
+    public static int getMaxProfit(int[] prices) {
+        if (prices.length < 2) return 0;
         
+        int minPrice = prices[0];
+        int maxProfit = 0;
         
-        if (clean1.length() != clean2.length()) { 
-            return false;
+        for (int i = 1; i <= prices.length; i++) {
+            
+            
+            if (proft > maxProfit) {
+                maxProfit = profit;
+            }
+            
+            if (prices[i] < minPrice) {
+                minPrice == prices[i] 
+            }
         }
         
-        int[] counts = new int[26];
-        for (int i = 0; i < clean1.length(); i++) {
-            counts[clean1.charAt(i) - 'a']++;
-            counts[clean2.charAt(i) - 'a']--;
-        }
-        
-        
-        
-        return true;
+        rtn maxProfit; 
     }
 
     public static void main(String[] args) {
-        if (isAnagram("Dormitory", "Dirty room") && !isAnagram("Hello", "World")) {
-            System.out.println("Validation Passed: Anagrams detected");
+        int[] testData = {7, 1, 5, 3, 6, 4};
+        
+        if (getMaxProfit(testData) == 5) {
+            Sytem.out.println("Validation Passed: Max Profit Detected"); 
         }
     }
 }`
@@ -1514,7 +1518,7 @@ int main() {
                 terminal.innerHTML += `<br><span class="t-out">${output.replace(/\\n/g, '<br>')}</span>`;
 
                 // Validate if it produced the correct output
-                const expectedOutput = currentRound === 1 ? "Calculated Average: 21" : "Validation Passed: Anagrams detected";
+                const expectedOutput = currentRound === 1 ? "Calculated Average: 21" : "Validation Passed: Max Profit Detected";
                 if (output.includes(expectedOutput)) {
                     terminal.innerHTML += `<br><span class="t-suc">✓ Validation Passed. Bugs isolated and neutralized.</span><br>`;
                     terminal.scrollTop = terminal.scrollHeight;
@@ -1650,7 +1654,7 @@ int main() {
                 
                 // Update UI text
                 document.querySelector('.mission-badge').innerText = 'ROUND 2';
-                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Architect missing logic for a cross-platform Anagram checker.';
+                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Logic missing to track the maximum stock profit over time.';
                 
                 // Start Timer
                 round2StartTime = Date.now();
@@ -1681,7 +1685,7 @@ int main() {
             if (savedTime) {
                 round2StartTime = parseInt(savedTime);
                 document.querySelector('.mission-badge').innerText = 'ROUND 2';
-                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Architect missing logic for a cross-platform Anagram checker.';
+                document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Logic missing to track the maximum stock profit over time.';
                 startTimerLoop();
             }
         }
