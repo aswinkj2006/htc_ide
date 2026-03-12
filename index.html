@@ -686,7 +686,155 @@
             font-size: 1rem;
             font-weight: 700;
             border-radius: 6px;
+            border-radius: 6px;
             cursor: pointer;
+        }
+
+        /* Leaderboard Overlay */
+        #leaderboard-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 17, 21, 0.95);
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .leaderboard-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .leaderboard-header {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leaderboard-header h2 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .close-leaderboard {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-leaderboard:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .leaderboard-content {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .leaderboard-table th {
+            padding: 12px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .leaderboard-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.95rem;
+        }
+
+        .rank-badge {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: var(--bg-surface-elevated);
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #808080); color: #000; }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: #000; }
+
+        .player-name { font-weight: 600; color: var(--text-primary); }
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-r1 { background: rgba(0, 210, 255, 0.1); color: var(--accent-secondary); }
+        .status-r2 { background: rgba(46, 213, 115, 0.1); color: var(--status-success); }
+
+        .time-display { font-family: var(--font-mono); font-weight: 500; color: var(--accent-secondary); }
+
+        #leaderboard-btn-header {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        #leaderboard-btn-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-tertiary);
+            color: var(--text-primary);
         }
     </style>
 </head>
@@ -696,19 +844,19 @@
     <!-- SECTION 1: Access Gate -->
     <div id="access-gate" class="full-screen">
         <div class="brand-title hero-title">HUNT THE CODE</div>
-        <div class="hero-subtitle">SECURE ONLINE JUDGE ENVIRONMENT</div>
+        <div class="hero-subtitle">FREE ENTRY // GLOBAL LEADERBOARD</div>
 
         <div class="auth-card" id="login-box">
             <div class="auth-label">Agent Name</div>
             <input type="text" id="sys-name" autocomplete="off" autofocus placeholder="e.g. John Doe"
                 onkeypress="if(event.key === 'Enter') document.getElementById('sys-password').focus()">
 
-            <div class="auth-label">Authentication Password</div>
-            <input type="password" id="sys-password" autocomplete="off" placeholder="••••••••"
+            <div class="auth-label">Authentication Password (Optional)</div>
+            <input type="password" id="sys-password" autocomplete="off" placeholder="Optional"
                 onkeypress="if(event.key === 'Enter') checkPassword()">
 
             <button class="primary-btn" onclick="checkPassword()">
-                ENTER SYSTEM
+                ENTER SYSTEM / START CHALLENGE
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -760,6 +908,14 @@
                         <polygon points="5 3 19 12 5 21 5 3"></polygon>
                     </svg>
                     SUBMIT
+                </button>
+                <button id="leaderboard-btn-header" onclick="toggleLeaderboard()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20V10"></path>
+                        <path d="M18 20V4"></path>
+                        <path d="M6 20v-4"></path>
+                    </svg>
+                    LEADERBOARD
                 </button>
             </div>
         </header>
@@ -846,9 +1002,9 @@
                     <line x1="12" y1="16" x2="12.01" y2="16"></line>
                 </svg>
             </div>
-            <div class="success-title">Maximum Capacity Reached</div>
+            <div class="success-title">Challenge Capacity</div>
             <div class="success-desc" style="text-align: left; font-size: 0.95rem;">
-                Thank you for participating! The top 5 slots for Round 2 have already been filled.<br><br>
+                Thank you for participating! This session has reached its capacity for new entries.<br><br>
                 <b>The Round 1 Solution Bugs Included:</b><br>
                 1. Missing semicolon on variable declaration.<br>
                 2. Misspelled 'while' as 'whle'<br>
@@ -858,7 +1014,7 @@
                     6. Java specific: file naming restriction bypassed by renaming class 'main' to lowercase or removing
                     public.
             </div>
-            <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL">PROCEED TO FEEDBACK</button>
+            <button class="primary-btn" onclick="toggleLeaderboard()">VIEW LEADERBOARD</button>
         </div>
     </div>
 
@@ -875,14 +1031,60 @@
             </div>
             <div class="success-title">Round 2 Qualifier</div>
             <div class="success-desc" style="text-align: left;">
-                Congratulations on completing Round 1! You are in the top 5.<br><br>
+                Congratulations on completing Round 1! You have successfully qualified for the next stage.<br><br>
                 <b>Round 2 Rules:</b><br>
                 - The code is much harder, missing logic architecture.<br>
                 - A timer will start the moment you click "Begin".<br>
                 - Closing the tab will NOT pause the timer.<br>
-                - The 2 fastest times win!
+                - Compete for the top spot on the leaderboard!
             </div>
             <button class="primary-btn" onclick="startRound2()">BEGIN ROUND 2</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Overlay -->
+    <div id="leaderboard-overlay">
+        <div class="leaderboard-container">
+            <div class="leaderboard-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2">
+                        <path d="M12 20V10"></path>
+                        <path d="M18 20V4"></path>
+                        <path d="M6 20v-4"></path>
+                    </svg>
+                    <h2>GLOBAL LEADERBOARD</h2>
+                </div>
+                <button class="close-leaderboard" onclick="toggleLeaderboard()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="leaderboard-content">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">Rank</th>
+                            <th>Agent</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">R2 Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Data injected via JS -->
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-tertiary);">
+                                <span class="loader" style="width: 24px; height: 24px; border-width: 2px;"></span><br><br>
+                                Synchronizing with host node...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding: 20px; text-align: center; background: rgba(0,0,0,0.1); font-size: 0.8rem; color: var(--text-tertiary);">
+                Leaderboard updates automatically every 10 seconds.
+            </div>
         </div>
     </div>
 
@@ -1217,49 +1419,17 @@ int main() {
                     const hasSubmittedR1 = data.some(row => row.name.toLowerCase() === userName.toLowerCase());
 
                     if (currentRound === 1) {
-                        if (count >= 5) {
-                            clearInterval(globalPollInterval);
-                            ideActive = false;
-                            document.getElementById('ide-container').style.display = 'none';
-                            document.getElementById('success-screen').style.display = 'none';
-
-                            if (hasSubmittedR1) {
-                                // User passed Round 1. Show Lobby.
-                                const lobby = document.getElementById('round2-lobby');
+                        if (hasSubmittedR1) {
+                            // User passed Round 1. Show Lobby.
+                            const lobby = document.getElementById('round2-lobby');
+                            if (lobby.style.display !== 'flex') {
                                 lobby.style.display = 'flex';
                                 setTimeout(() => lobby.style.opacity = '1', 50);
-                            } else {
-                                // Round 1 is full, and user didn't make the top 5.
-                                const warning = document.getElementById('capacity-warning');
-                                warning.style.display = 'flex';
-                                setTimeout(() => warning.style.opacity = '1', 50);
                             }
-                        } else if (hasSubmittedR1 && count < 5) {
-                            // Waiting room state
+
+                            // Ensure IDE is hidden if they are in the lobby
                             ideActive = false;
                             document.getElementById('ide-container').style.display = 'none';
-                            const success = document.getElementById('success-screen');
-                            const successCard = document.getElementById('success-card-content');
-
-                            if (success.style.display !== 'flex') {
-                                success.style.display = 'flex';
-                                void success.offsetWidth;
-                                success.style.opacity = '1';
-                            }
-
-                            successCard.innerHTML = `
-                                <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                    </svg>
-                                </div>
-                                <div class="success-title">Verification Successful</div>
-                                <div class="success-desc">
-                                    Algorithm logic flaws corrected. You have qualified for <b>ROUND 2</b>.<br><br>
-                                    <span style="color: var(--status-warning)">Syncing global network... (${count}/5 slots filled)</span>
-                                </div>
-                                <div class="loader" style="width: 30px; height: 30px; margin: 0 auto; display: block; border-bottom-color: var(--status-warning);"></div>
-                            `;
                         }
                     }
                 }
@@ -1359,7 +1529,8 @@ int main() {
 
             errorText.innerText = "Invalid credentials. Access Denied.";
 
-            if (validateDynamicToken(pwd)) {
+            // Free Entry Mode: Allow if name is present
+            if (true) {
                 // Request Fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen().catch(e => console.log(e));
@@ -1624,7 +1795,7 @@ int main() {
                             Your time has been recorded. The top 2 fastest qualifiers will be crowned the champions.
                         </div>
                         <div class="timestamp">Session finished: ${timestampStr}</div>
-                        <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL" style="margin-top: 20px;">PROCEED TO FEEDBACK</button>
+                        <button class="primary-btn" onclick="toggleLeaderboard()" style="margin-top: 20px;">VIEW LEADERBOARD</button>
                     `;
 
                     ide.style.display = 'none';
@@ -1636,8 +1807,8 @@ int main() {
                 }
 
                 // --- ROUND 1 SUCCESS LOGIC ---
-                if (isDatabaseConnected && rankCount < 5) {
-                    // Check if already submitted to prevent duplicates if they click run multiple times
+                if (isDatabaseConnected) {
+                    // Always record Round 1 completions in Free Entry mode
                     const { data } = await sbClient.from('submissions').select('name').eq('name', userName);
                     if (!data || data.length === 0) {
                         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -1729,6 +1900,96 @@ int main() {
                 }
             }
         });
+
+        // --- LEADERBOARD LOGIC ---
+        let leaderboardInterval = null;
+
+        async function toggleLeaderboard() {
+            const overlay = document.getElementById('leaderboard-overlay');
+            if (overlay.style.display === 'flex') {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 300);
+                clearInterval(leaderboardInterval);
+                leaderboardInterval = null;
+            } else {
+                overlay.style.display = 'flex';
+                void overlay.offsetWidth;
+                overlay.style.opacity = '1';
+                fetchLeaderboardData();
+                leaderboardInterval = setInterval(fetchLeaderboardData, 10000);
+            }
+        }
+
+        async function fetchLeaderboardData() {
+            if (!sbClient) return;
+            try {
+                // Fetch Round 1 and Round 2 data
+                const [r1Res, r2Res] = await Promise.all([
+                    sbClient.from('submissions').select('name, timestamp'),
+                    sbClient.from('round2_submissions').select('name, time_taken_seconds').order('time_taken_seconds', { ascending: true })
+                ]);
+
+                if (r1Res.error || r2Res.error) throw new Error("Supabase fetch failed");
+
+                const r2Data = r2Res.data;
+                const r1Data = r1Res.data;
+
+                // Merge data: Round 2 completions take priority, then Round 1 qualifiers
+                const leaderboard = [];
+                const processedAgents = new Set();
+
+                // 1. Add Round 2 finishers
+                r2Data.forEach(entry => {
+                    leaderboard.push({
+                        name: entry.name,
+                        status: 'COMPLETED',
+                        time: entry.time_taken_seconds,
+                        sortKey: entry.time_taken_seconds
+                    });
+                    processedAgents.add(entry.name.toLowerCase());
+                });
+
+                // 2. Add Round 1 Qualifiers who haven't finished Round 2
+                r1Data.forEach(entry => {
+                    if (!processedAgents.has(entry.name.toLowerCase())) {
+                        leaderboard.push({
+                            name: entry.name,
+                            status: 'QUALIFIED',
+                            time: null,
+                            sortKey: 999999 // Put them after all R2 finishers
+                        });
+                        processedAgents.add(entry.name.toLowerCase());
+                    }
+                });
+
+                updateLeaderboardUI(leaderboard);
+            } catch (e) {
+                console.log("Leaderboard sync failed", e);
+            }
+        }
+
+        function updateLeaderboardUI(data) {
+            const body = document.getElementById('leaderboard-body');
+            if (data.length === 0) {
+                body.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: var(--text-tertiary);">No agents have initialized challenges yet.</td></tr>';
+                return;
+            }
+
+            body.innerHTML = data.map((entry, index) => {
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                const statusClass = entry.status === 'COMPLETED' ? 'status-r2' : 'status-r1';
+                const timeStr = entry.time !== null ? `${Math.floor(entry.time / 60)}m ${entry.time % 60}s` : '--:--';
+                
+                return `
+                    <tr>
+                        <td><div class="rank-badge ${rankClass}">${index + 1}</div></td>
+                        <td><span class="player-name">${entry.name}</span></td>
+                        <td><span class="status-pill ${statusClass}">${entry.status}</span></td>
+                        <td style="text-align: right;"><span class="time-display">${timeStr}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
     </script>
 </body>
 
