@@ -159,9 +159,9 @@
             border-radius: 8px;
             transition: all 0.2s ease;
         }
-        
+
         input[type="password"] {
-             letter-spacing: 4px;
+            letter-spacing: 4px;
         }
 
         input[type="text"]:focus,
@@ -421,11 +421,13 @@
             cursor: ns-resize;
             transition: background 0.2s;
             z-index: 10;
-            margin: -10px 0; /* Negates the main-workspace gap */
+            margin: -10px 0;
+            /* Negates the main-workspace gap */
             border-radius: 3px;
         }
 
-        #resizer:hover, #resizer:active {
+        #resizer:hover,
+        #resizer:active {
             background: var(--accent-primary);
         }
 
@@ -601,7 +603,7 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        
+
         #proctor-warning-content {
             background: rgba(255, 71, 87, 0.1);
             border: 1px solid var(--status-error);
@@ -623,7 +625,7 @@
             line-height: 1.5;
             margin-bottom: 30px;
         }
-        
+
         #proctor-warning button {
             background: var(--status-error);
             color: white;
@@ -653,7 +655,7 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        
+
         #fullscreen-warning-content {
             background: rgba(255, 165, 2, 0.1);
             border: 1px solid var(--status-warning);
@@ -675,7 +677,7 @@
             line-height: 1.5;
             margin-bottom: 30px;
         }
-        
+
         #fullscreen-warning button {
             background: var(--status-warning);
             color: #000;
@@ -686,7 +688,6 @@
             border-radius: 6px;
             cursor: pointer;
         }
-
     </style>
 </head>
 
@@ -701,11 +702,11 @@
             <div class="auth-label">Agent Name</div>
             <input type="text" id="sys-name" autocomplete="off" autofocus placeholder="e.g. John Doe"
                 onkeypress="if(event.key === 'Enter') document.getElementById('sys-password').focus()">
-                
+
             <div class="auth-label">Authentication Password</div>
             <input type="password" id="sys-password" autocomplete="off" placeholder="••••••••"
                 onkeypress="if(event.key === 'Enter') checkPassword()">
-                
+
             <button class="primary-btn" onclick="checkPassword()">
                 ENTER SYSTEM
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -753,7 +754,8 @@
                         <option value="java">Java 17 LTS</option>
                     </select>
                 </div>
-                <button id="submit-btn" class="primary-btn" onclick="runCode()" style="padding: 10px 24px; margin-top: 0">
+                <button id="submit-btn" class="primary-btn" onclick="runCode()"
+                    style="padding: 10px 24px; margin-top: 0">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5 3 19 12 5 21 5 3"></polygon>
                     </svg>
@@ -773,14 +775,15 @@
                 </div>
                 <div class="mission-context">
                     <span class="mission-badge">Objective</span>
-                    <span>Fix syntax, typos, and logic errors to find the exact average of all multiples of 3. (Target: 21)</span>
+                    <span>Fix syntax, typos, and logic errors to find the exact average of all multiples of 3. (Target:
+                        21)</span>
                 </div>
             </div>
 
             <div class="editor-container">
                 <div id="editor"></div>
             </div>
-            
+
             <div id="resizer"></div>
 
             <div id="terminal-panel">
@@ -797,16 +800,17 @@
                 </div>
                 <div id="terminal-output">
                     <span class="t-sys">Workspace initialized. Monitoring active.
-Compiler daemon running in background...</span>
+                        Compiler daemon running in background...</span>
                 </div>
             </div>
         </div>
-        
+
         <!-- Proctor Warning Overlay -->
         <div id="proctor-warning">
             <div id="proctor-warning-content">
                 <h2>WARNING: WINDOW UNFOCUSED</h2>
-                <p>You have switched tabs or clicked away from the IDE.<br>This is a proctored environment. Further infractions will result in progressive time penalties.</p>
+                <p>You have switched tabs or clicked away from the IDE.<br>This is a proctored environment. Further
+                    infractions will result in progressive time penalties.</p>
                 <button onclick="dismissWarning()">ACKNOWLEDGE</button>
             </div>
         </div>
@@ -815,7 +819,8 @@ Compiler daemon running in background...</span>
         <div id="fullscreen-warning">
             <div id="fullscreen-warning-content">
                 <h2>WARNING: FULLSCREEN REQUIRED</h2>
-                <p>This proctored environment requires fullscreen mode.<br>Please return to fullscreen to continue your session.</p>
+                <p>This proctored environment requires fullscreen mode.<br>Please return to fullscreen to continue your
+                    session.</p>
                 <button onclick="enforceFullscreen()">RETURN TO FULLSCREEN</button>
             </div>
         </div>
@@ -829,11 +834,16 @@ Compiler daemon running in background...</span>
     </div>
 
     <!-- Capacity Warning Overlay (Round 1 Full) -->
-    <div id="capacity-warning" class="full-screen" style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
+    <div id="capacity-warning" class="full-screen"
+        style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
         <div class="success-card">
-            <div class="success-icon" style="color: var(--status-error); border-color: var(--status-error); background: rgba(255, 71, 87, 0.1);">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+            <div class="success-icon"
+                style="color: var(--status-error); border-color: var(--status-error); background: rgba(255, 71, 87, 0.1);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
                 </svg>
             </div>
             <div class="success-title">Maximum Capacity Reached</div>
@@ -845,17 +855,21 @@ Compiler daemon running in background...</span>
                 3. Misspelled 'printf' / 'System' / 'return'<br>
                 4. Logic error: Used assignment '=' instead of equality '=='<br>
                 5. Logic error: Out of bounds array iteration (<= instead of <)<br>
-                6. Java specific: file naming restriction bypassed by renaming class 'main' to lowercase or removing public.
+                    6. Java specific: file naming restriction bypassed by renaming class 'main' to lowercase or removing
+                    public.
             </div>
             <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL">PROCEED TO FEEDBACK</button>
         </div>
     </div>
 
     <!-- Round 2 Lobby Overlay -->
-    <div id="round2-lobby" class="full-screen" style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
+    <div id="round2-lobby" class="full-screen"
+        style="display: none; opacity: 0; z-index: 70; background: rgba(15, 17, 21, 0.98); backdrop-filter: blur(15px);">
         <div class="success-card">
-            <div class="success-icon" style="color: var(--accent-secondary); border-color: var(--accent-secondary); background: rgba(0, 210, 255, 0.1);">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <div class="success-icon"
+                style="color: var(--accent-secondary); border-color: var(--accent-secondary); background: rgba(0, 210, 255, 0.1);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
             </div>
@@ -883,7 +897,7 @@ Compiler daemon running in background...</span>
         const sbClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
         const FEEDBACK_FORM_URL = "https://forms.gle/mE1PtobFP2i2rumH7";
         // ------------------------------
-        
+
         let userName = "";
 
         // Pre-loaded buggy code templates
@@ -892,7 +906,7 @@ Compiler daemon running in background...</span>
         //    (e.g., in Python: `if n <= 1: return True` instead of `return False`)
         // 2. Off-by-one: The loop to 50 stops at 49 (e.g., python range(1, 50), C/Java i < 50)
         // 3. Logic error: checking if divisible by `i` starting from 1 (everything is div by 1)
-        
+
         const codesRound1 = {
             'python': `from typing import List
 
@@ -1076,12 +1090,12 @@ int main() {
     }
 }`
         };
-        
+
         let currentRound = 1;
         let codes = codesRound1;
 
         const exts = { 'python': 'py', 'c_cpp': 'c', 'java': 'java' };
-        
+
         // Godbolt Compiler Explorer Language IDs
         const godboltCompilers = {
             'python': 'python311',
@@ -1099,7 +1113,7 @@ int main() {
         let isLockedOut = false;
         let proctorWarnings = 0;
         let ideActive = false;
-        
+
         // --- RESIZER LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const resizer = document.getElementById('resizer');
@@ -1116,10 +1130,10 @@ int main() {
             document.addEventListener('mousemove', (e) => {
                 if (!isResizing) return;
                 const workspaceRect = mainWorkspace.getBoundingClientRect();
-                
+
                 // Calculate distance from bottom of the workspace to the mouse
                 const newHeight = workspaceRect.bottom - e.clientY;
-                
+
                 // Set limits (terminal min height: 100px, max height: workspace height - 200px)
                 if (newHeight >= 100 && newHeight <= workspaceRect.height - 200) {
                     terminalPanel.style.height = newHeight + 'px';
@@ -1144,11 +1158,11 @@ int main() {
                 if (localStorage.getItem('htc_session_active') === 'true') {
                     userName = localStorage.getItem('htc_username') || "UNKNOWN";
                     currentRound = parseInt(localStorage.getItem('htc_round') || "1");
-                    
+
                     if (currentRound === 2) {
                         codes = codesRound2;
                     }
-                    
+
                     document.getElementById('display-agent-name').innerText = userName.toUpperCase();
                     document.getElementById('access-gate').style.display = 'none';
                     const ide = document.getElementById('ide-container');
@@ -1157,7 +1171,7 @@ int main() {
                     ide.style.opacity = '1';
                     ideActive = true;
                 }
-                
+
                 editor = ace.edit("editor");
                 editor.setTheme("ace/theme/tomorrow_night_blue");
                 editor.session.setMode("ace/mode/python");
@@ -1172,7 +1186,7 @@ int main() {
                     highlightActiveLine: true,
                 });
                 document.getElementById('editor').style.backgroundColor = "var(--bg-surface-elevated)";
-                
+
                 // If they bypassed login via session, check limits instantly
                 if (ideActive) {
                     if (editor) editor.resize();
@@ -1181,7 +1195,7 @@ int main() {
                 }
             }, 50);
         };
-        
+
         let globalPollInterval = null;
 
         function startGlobalSync() {
@@ -1190,7 +1204,7 @@ int main() {
                 globalPollInterval = setInterval(checkRoundLimits, 5000); // Sync every 5 seconds
             }
         }
-        
+
         async function checkRoundLimits() {
             if (!sbClient) return;
             try {
@@ -1208,7 +1222,7 @@ int main() {
                             ideActive = false;
                             document.getElementById('ide-container').style.display = 'none';
                             document.getElementById('success-screen').style.display = 'none';
-                            
+
                             if (hasSubmittedR1) {
                                 // User passed Round 1. Show Lobby.
                                 const lobby = document.getElementById('round2-lobby');
@@ -1226,13 +1240,13 @@ int main() {
                             document.getElementById('ide-container').style.display = 'none';
                             const success = document.getElementById('success-screen');
                             const successCard = document.getElementById('success-card-content');
-                            
+
                             if (success.style.display !== 'flex') {
                                 success.style.display = 'flex';
                                 void success.offsetWidth;
                                 success.style.opacity = '1';
                             }
-                            
+
                             successCard.innerHTML = `
                                 <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1253,7 +1267,7 @@ int main() {
                 console.log("Supabase limit check failed", e);
             }
         }
-        
+
         // --- PROCTORING LOGIC ---
         document.addEventListener("fullscreenchange", () => {
             if (ideActive && !document.fullscreenElement) {
@@ -1262,7 +1276,7 @@ int main() {
                 setTimeout(() => warning.style.opacity = '1', 50);
             }
         });
-        
+
         function enforceFullscreen() {
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().then(() => {
@@ -1282,7 +1296,7 @@ int main() {
                     const warning = document.getElementById('proctor-warning');
                     warning.style.display = 'flex';
                     setTimeout(() => warning.style.opacity = '1', 50);
-                    
+
                     const terminal = document.getElementById('terminal-output');
                     terminal.innerHTML += `<br><span class="t-wrn">[!] PROCTOR ALERT: Window focus lost. Final warning issued.</span>`;
                     terminal.scrollTop = terminal.scrollHeight;
@@ -1295,7 +1309,7 @@ int main() {
                 }
             }
         });
-        
+
         function dismissWarning() {
             const warning = document.getElementById('proctor-warning');
             warning.style.opacity = '0';
@@ -1306,25 +1320,25 @@ int main() {
         function validateDynamicToken(token) {
             if (!token) return false;
             token = token.toUpperCase();
-            
+
             // Expected Format: HTC-XXXXXX-YY 
             // - XXXXXX: 6 Random alphanumeric characters
             // - YY: 2-character checksum (1 letter, 1 digit)
             const regex = /^HTC-([A-Z0-9]{6})-([A-Z])([0-9])$/;
             const match = token.match(regex);
-            
+
             if (!match) return false;
-            
+
             const payload = match[1];
             let sum = 0;
             for (let i = 0; i < payload.length; i++) {
                 sum += payload.charCodeAt(i);
             }
-            
+
             // Verification logic corresponding to the generator
             const expectedLetter = String.fromCharCode(65 + (sum % 26)); // A-Z
             const expectedDigit = (sum % 10).toString(); // 0-9
-            
+
             return (expectedLetter === match[2] && expectedDigit === match[3]);
         }
 
@@ -1335,14 +1349,14 @@ int main() {
             const errorText = document.getElementById('error-text');
             const decryptMsg = document.getElementById('decrypting-msg');
             const loginBox = document.getElementById('login-box');
-            
+
             if (nameInput === '') {
-                 errorText.innerText = "Agent Name is required.";
-                 error.style.opacity = '1';
-                 setTimeout(() => error.style.opacity = '0', 3000);
-                 return;
+                errorText.innerText = "Agent Name is required.";
+                error.style.opacity = '1';
+                setTimeout(() => error.style.opacity = '0', 3000);
+                return;
             }
-            
+
             errorText.innerText = "Invalid credentials. Access Denied.";
 
             if (validateDynamicToken(pwd)) {
@@ -1353,12 +1367,12 @@ int main() {
 
                 userName = nameInput;
                 document.getElementById('display-agent-name').innerText = userName.toUpperCase();
-                
+
                 // Save session so a refresh doesn't kick them out
                 localStorage.setItem('htc_session_active', 'true');
                 localStorage.setItem('htc_username', userName);
                 localStorage.setItem('htc_round', '1');
-                
+
                 error.style.opacity = '0';
                 loginBox.style.display = 'none';
                 decryptMsg.style.display = 'flex';
@@ -1373,7 +1387,7 @@ int main() {
                         ide.style.opacity = '1';
                         if (editor) editor.resize();
                         ideActive = true; // Activate proctoring
-                        
+
                         // Check if Round 1 is already full before letting them type
                         startGlobalSync();
                     }, 600);
@@ -1462,13 +1476,13 @@ int main() {
                     lang: gbLangIds[lang],
                     allowStoreCodeDebug: true
                 };
-                
+
                 // For Java, the compiler limits require the class to match the filename. Godbolt compiles it as "example.java" by default.
                 // We map it to main.java so the student has to figure out they must rename "public class main"
                 if (lang === 'java') {
                     postData.options.compilerOptions = { executorRequest: true, codeFilePath: "main.java" };
                 }
-                
+
                 terminal.innerHTML += `<br><span class="t-sys">Compiling source code...</span>`;
 
                 const response = await fetch(`https://godbolt.org/api/compiler/${godboltCompilers[lang]}/compile`, {
@@ -1485,11 +1499,11 @@ int main() {
                 }
 
                 const result = await response.json();
-                
+
                 terminal.innerHTML += `<br><span class="t-sys">Executing binary...</span>`;
 
                 // Helper to extract text from Godbolt output arrays and strip all ANSI control chars
-                const extractText = (arr) => arr ? arr.map(l => l.text).join('\\n').replace(/\\x1b\\[[0-9;]*[a-zA-Z]/g, '') : "";
+                const extractText = (arr) => arr ? arr.map(l => l.text).join('\n').replace(/\x1b\[[0-9;]*[a-zA-Z]/g, '') : "";
 
                 const buildCode = result.buildResult ? result.buildResult.code : 0;
                 const buildErr = result.buildResult ? extractText(result.buildResult.stderr) : "";
@@ -1504,28 +1518,34 @@ int main() {
                     applyPenalty();
                     return;
                 }
-                
+
                 // Handle Runtime Errors
                 if (result.code !== 0 && result.code !== -1) {
-                     terminal.innerHTML += `<br><span class="t-err">Error: Exited with non-zero status (${result.code}).</span><br>`;
-                     terminal.innerHTML += `<span class="t-err">${runErr.replace(/\\n/g, '<br>')}</span>`;
-                     terminal.scrollTop = terminal.scrollHeight;
-                     applyPenalty();
-                     return;
+                    terminal.innerHTML += `<br><span class="t-err">Error: Exited with non-zero status (${result.code}).</span><br>`;
+                    terminal.innerHTML += `<span class="t-err">${runErr.replace(/\\n/g, '<br>')}</span>`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                    applyPenalty();
+                    return;
                 }
 
                 // Code executed successfully
                 terminal.innerHTML += `<br><span class="t-out">${output.replace(/\\n/g, '<br>')}</span>`;
 
                 // Validate if it produced the correct output
-                const expectedOutput = currentRound === 1 ? "Calculated Average: 21" : "Validation Passed: Max Profit Detected";
-                if (output.includes(expectedOutput)) {
+                const outputClean = output.toLowerCase().trim();
+                const expected1 = "calculated average: 21";
+                const expected2 = "validation passed: max profit detected";
+                
+                const isPassed = currentRound === 1 ? outputClean.includes(expected1) : outputClean.includes(expected2);
+                
+                if (isPassed) {
                     terminal.innerHTML += `<br><span class="t-suc">✓ Validation Passed. Bugs isolated and neutralized.</span><br>`;
                     terminal.scrollTop = terminal.scrollHeight;
                     ideActive = false; // Turn off proctor warnings immediately
                     setTimeout(triggerSuccess, 1500);
                 } else {
                     terminal.innerHTML += `<br><span class="t-err">✗ Validation Failed. Output does not match expected business logic.</span>`;
+                    terminal.innerHTML += `<br><span class="t-sys" style="font-size:0.85em; opacity:0.6;">[DEBUG] Round: ${currentRound} | Expected keyword: ${currentRound === 1 ? expected1 : expected2}</span>`;
                     terminal.scrollTop = terminal.scrollHeight;
                     applyPenalty();
                 }
@@ -1537,7 +1557,7 @@ int main() {
                 }
                 terminal.innerHTML += `<br><span class="t-err">Could not establish secure compiler connection.</span>`;
                 terminal.scrollTop = terminal.scrollHeight;
-                
+
                 // Keep button locked down a tiny bit then unlock so we don't softlock the presentation on network error
                 setTimeout(() => {
                     btn.disabled = false;
@@ -1553,12 +1573,12 @@ int main() {
 
             setTimeout(async () => {
                 const successCard = document.getElementById('success-card-content');
-                
+
                 // Formatted Timestamp
                 const now = new Date();
                 const pad = (n) => n.toString().padStart(2, '0');
                 const timestampStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-                
+
                 // Supabase Logic
                 let isDatabaseConnected = false;
                 let rankCount = 0;
@@ -1577,21 +1597,21 @@ int main() {
                         console.log("Supabase fetch failed", e);
                     }
                 }
-                
+
                 // --- ROUND 2 SUCCESS LOGIC ---
                 if (currentRound === 2) {
                     clearInterval(round2Interval);
                     const elapsedSeconds = Math.floor((Date.now() - round2StartTime) / 1000);
-                    
+
                     if (isDatabaseConnected) {
-                         await sbClient.from('round2_submissions').insert([
-                             { name: userName, time_taken_seconds: elapsedSeconds, passkey: "HTC-FINAL" }
-                         ]);
+                        await sbClient.from('round2_submissions').insert([
+                            { name: userName, time_taken_seconds: elapsedSeconds, passkey: "HTC-FINAL" }
+                        ]);
                     }
-                    
+
                     const m = Math.floor(elapsedSeconds / 60);
                     const s = elapsedSeconds % 60;
-                    
+
                     successCard.innerHTML = `
                         <div class="success-icon" style="color: var(--status-success); border-color: var(--status-success); background: rgba(46, 213, 115, 0.1);">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1606,7 +1626,7 @@ int main() {
                         <div class="timestamp">Session finished: ${timestampStr}</div>
                         <button class="primary-btn" onclick="window.location.href=FEEDBACK_FORM_URL" style="margin-top: 20px;">PROCEED TO FEEDBACK</button>
                     `;
-                    
+
                     ide.style.display = 'none';
                     const success = document.getElementById('success-screen');
                     success.style.display = 'flex';
@@ -1636,7 +1656,7 @@ int main() {
 
             }, 600);
         }
-        
+
         let round2Interval;
         let round2StartTime;
 
@@ -1645,28 +1665,28 @@ int main() {
             lobby.style.opacity = '0';
             setTimeout(() => {
                 lobby.style.display = 'none';
-                
+
                 // Initialize Round 2 State
                 currentRound = 2;
                 localStorage.setItem('htc_round', '2');
                 codes = codesRound2;
                 changeLanguage();
-                
+
                 // Update UI text
                 document.querySelector('.mission-badge').innerText = 'ROUND 2';
                 document.querySelector('.mission-context span:last-child').innerText = 'Hard Mode: Logic missing to track the maximum stock profit over time.';
-                
+
                 // Start Timer
                 round2StartTime = Date.now();
                 localStorage.setItem('htc_timer_start', round2StartTime.toString());
                 ideActive = true;
-                
+
                 // MAKE THE IDE VISIBLE AGAIN!
                 const ide = document.getElementById('ide-container');
                 ide.style.display = 'flex';
                 void ide.offsetWidth; // Force CSS reflow
                 ide.style.opacity = '1';
-                
+
                 // Reset ReadOnly in case they were locked out with a penalty earlier
                 if (editor) {
                     editor.setReadOnly(false);
@@ -1675,11 +1695,11 @@ int main() {
                     btn.disabled = false;
                     btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> SUBMIT`;
                 }
-                
+
                 startTimerLoop();
             }, 300);
         }
-        
+
         function restoreRound2Timer() {
             const savedTime = localStorage.getItem('htc_timer_start');
             if (savedTime) {
@@ -1689,16 +1709,26 @@ int main() {
                 startTimerLoop();
             }
         }
-        
+
         function startTimerLoop() {
-             const terminalTitle = document.querySelector('.term-title');
-             round2Interval = setInterval(() => {
-                 const elapsed = Math.floor((Date.now() - round2StartTime) / 1000);
-                 const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
-                 const s = (elapsed % 60).toString().padStart(2, '0');
-                 terminalTitle.innerHTML = `Execution Console <span style="color:var(--status-warning);margin-left:15px;">TIMER: ${m}:${s}</span>`;
-             }, 1000);
+            const terminalTitle = document.querySelector('.term-title');
+            round2Interval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - round2StartTime) / 1000);
+                const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const s = (elapsed % 60).toString().padStart(2, '0');
+                terminalTitle.innerHTML = `Execution Console <span style="color:var(--status-warning);margin-left:15px;">TIMER: ${m}:${s}</span>`;
+            }, 1000);
         }
+
+        // --- HIDDEN RESET SHORTCUT (Ctrl+Shift+R) ---
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                if (confirm("DEVELOPER ACTION: Perform hard reset for next student?")) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            }
+        });
     </script>
 </body>
 
